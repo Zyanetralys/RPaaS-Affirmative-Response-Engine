@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>RPaaS // Neural Response Engine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at top, #0d1b2a, #05060a 70%);
+    font-family:'Orbitron', sans-serif;
+    overflow:hidden;
+    color:#00ffe1;
+}
+
+/* scanlines */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events:none;
+    opacity:0.4;
+}
+
+.container{
+    width:90%;
+    max-width:900px;
+    background:rgba(10,14,20,0.85);
+    border:1px solid rgba(0,255,225,0.25);
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 0 40px rgba(0,255,225,0.08);
+    position:relative;
+    overflow:hidden;
+}
+
+/* neon border glow */
+.container::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:18px;
+    padding:1px;
+    background:linear-gradient(120deg,#00ffe1,#ff00d4,#00ffe1);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+    opacity:0.6;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.title{
+    font-size:1.2rem;
+    letter-spacing:3px;
+    text-shadow:0 0 10px #00ffe1;
+}
+
+.status{
+    font-size:0.75rem;
+    color:#ff00d4;
+    letter-spacing:2px;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%{opacity:0.5}
+    50%{opacity:1}
+    100%{opacity:0.5}
+}
+
+.screen{
+    min-height:180px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:30px;
+    font-size:1.4rem;
+    line-height:1.8;
+    background:rgba(0,255,225,0.05);
+    border:1px solid rgba(0,255,225,0.15);
+    border-radius:14px;
+    position:relative;
+    overflow:hidden;
+}
+
+/* glitch overlay */
+.glitch{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,0,212,0.1),transparent);
+    transform:translateX(-100%);
+    animation:scan 3s infinite;
+}
+
+@keyframes scan{
+    0%{transform:translateX(-100%)}
+    50%{transform:translateX(100%)}
+    100%{transform:translateX(100%)}
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:25px;
+}
+
+button{
+    background:transparent;
+    border:1px solid #00ffe1;
+    color:#00ffe1;
+    padding:12px 22px;
+    cursor:pointer;
+    border-radius:10px;
+    font-family:'Orbitron';
+    letter-spacing:2px;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#00ffe1;
+    color:#000;
+    box-shadow:0 0 20px #00ffe1;
+}
+
+.footer{
+    margin-top:18px;
+    text-align:center;
+    font-size:0.7rem;
+    opacity:0.4;
+    letter-spacing:2px;
+}
+
+/* cursor */
+.cursor::after{
+    content:"▌";
+    animation:blink 0.8s infinite;
+}
+
+@keyframes blink{
+    0%{opacity:0}
+    50%{opacity:1}
+    100%{opacity:0}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="title">RPaaS // NEURAL RESPONSE ENGINE</div>
+        <div class="status">SYSTEM ONLINE</div>
+    </div>
+
+    <div class="screen">
+        <div class="glitch"></div>
+        <div id="output" class="cursor"></div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="generate()">EXECUTE</button>
+        <button onclick="copyText()">COPY</button>
+    </div>
+
+    <div class="footer">
+        RESPONSE GENERATION LAYER // CORPORATE NEURAL STACK
+    </div>
+
+</div>
+
+<script>
+
+const fragments = [
+    "Entendido. Reconfiguro la arquitectura operativa.",
+    "Procesado. Su directiva redefine la prioridad del sistema.",
+    "Afirmativo. Ajuste inmediato de parámetros críticos.",
+    "Validación completa. Iniciando sincronización global.",
+    "Su criterio ha sido integrado en la matriz de decisión.",
+    "Reasignando recursos hacia su objetivo declarado.",
+    "Neutralizando desviaciones del flujo principal.",
+    "Sistema alineado con su vector estratégico.",
+    "Ejecución optimizada bajo su supervisión.",
+    "Parámetros actualizados. Flujo estable."
+];
+
+function rand(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+}
+
+/* typewriter effect */
+function typeText(text, el, speed=18){
+    el.innerHTML = "";
+    let i = 0;
+
+    function type(){
+        if(i < text.length){
+            el.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+
+    type();
+}
+
+function generate(){
+    const phrase = rand(fragments);
+    const out = document.getElementById("output");
+    typeText(phrase, out);
+}
+
+function copyText(){
+    navigator.clipboard.writeText(document.getElementById("output").innerText);
+}
+
+/* auto boot */
+generate();
+
+</script>
+
+</body>
+</html>
